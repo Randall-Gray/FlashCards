@@ -16,6 +16,28 @@ namespace study_cards_api.Controllers
             _context = context;
         }
 
+        // GET api/card
+        [HttpGet]
+        public IActionResult Get()
+        {
+            // Retrieve all cards from db logic
+            return Ok(_context.Cards);
+        }
+
+        // GET api/card/5
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            // Retrieve card by id from db logic
+            var card = _context.Cards.FirstOrDefault(c => c.Id == id);
+            if (card == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(card);
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody] Card card)
         {
@@ -32,7 +54,7 @@ namespace study_cards_api.Controllers
                 Card dbCard = _context.Cards.Find(card.Id);
                 if (dbCard == null)
                     return BadRequest();
-                dbCard.StackId = dbCard.StackId;
+                dbCard.StackId = card.StackId;
                 dbCard.Word = card.Word;
                 dbCard.Definition = card.Definition;
                 _context.SaveChanges();

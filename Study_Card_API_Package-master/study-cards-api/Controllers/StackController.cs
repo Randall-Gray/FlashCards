@@ -19,6 +19,26 @@ namespace study_cards_api.Controllers
             _context = context;
         }
 
+        // GET api/stack
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok(_context.Stacks);
+        }
+
+        // GET api/stack/5
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var stack = _context.Stacks.FirstOrDefault(s => s.Id == id);
+            if (stack == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(stack);
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody] Stack stack)
         {
